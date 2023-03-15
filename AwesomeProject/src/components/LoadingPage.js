@@ -1,14 +1,12 @@
 import React from 'react'
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from 'react-native';
 
-
-import LoadingPage from './src/components/LoadingPage';
 
 const LoadingPage = () => {
     return (
         <SafeAreaView style={styles.container}>
-
+            <ActivityIndicator size="large" />
         </SafeAreaView>
     )
 }
@@ -16,7 +14,7 @@ const LoadingPage = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'red',
+        backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
     },

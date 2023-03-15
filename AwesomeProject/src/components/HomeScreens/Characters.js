@@ -2,28 +2,29 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
 
-const URL = "https://rickandmortyapi.com/api/character"
-
-async function callApi() {
-    try {
-        const res = await fetch(URL)
-        const data = await res.json()
-        console.log(data)
-    }
-    catch {
-        const err = console.err(err)
-    }
-
-}
-callApi()
 
 const MainItems = () => {
+
+    const URL = "https://rickandmortyapi.com/api/character"
+
+    async function callApi() {
+        try {
+            const res = await fetch(URL, { method: 'GET' })
+            const data = await res.json()
+            console.log(data)
+        }
+        catch {
+            const err = console.err(err)
+        }
+
+    }
+    callApi()
     return (
         <>
             <SafeAreaView style={styles.container}>
                 <View style={styles.containerImg}>
                     <View>
-                        <Image style={styles.img} source={require('../assets/favicon.png')}></Image>
+                        <Image style={styles.img} source={require('../../assets/favicon.png')}></Image>
                     </View>
                     <View style={styles.imgDescription}>
                         <Text style={styles.descriptionName}>Rick i Morty</Text>
@@ -32,17 +33,7 @@ const MainItems = () => {
                 </View>
                 <View style={styles.containerImg}>
                     <View>
-                        <Image style={styles.img} source={require('../assets/favicon.png')}></Image>
-                    </View>
-                    <View style={styles.imgDescription}>
-                        <Text style={styles.descriptionName}>Rick i Morty</Text>
-                        <Text style={styles.descriptionText}>zfvvr</Text>
-                    </View>
-
-                </View>
-                <View style={styles.containerImg}>
-                    <View>
-                        <Image style={styles.img} source={require('../assets/favicon.png')}></Image>
+                        <Image style={styles.img} source={require('../../assets/favicon.png')}></Image>
                     </View>
                     <View style={styles.imgDescription}>
                         <Text style={styles.descriptionName}>Rick i Morty</Text>
@@ -52,7 +43,17 @@ const MainItems = () => {
                 </View>
                 <View style={styles.containerImg}>
                     <View>
-                        <Image style={styles.img} source={require('../assets/favicon.png')}></Image>
+                        <Image style={styles.img} source={require('../../assets/favicon.png')}></Image>
+                    </View>
+                    <View style={styles.imgDescription}>
+                        <Text style={styles.descriptionName}>Rick i Morty</Text>
+                        <Text style={styles.descriptionText}>zfvvr</Text>
+                    </View>
+
+                </View>
+                <View style={styles.containerImg}>
+                    <View>
+                        <Image style={styles.img} source={require('../../assets/favicon.png')}></Image>
                     </View>
                     <View style={styles.imgDescription}>
                         <Text style={styles.descriptionName}>Rick i Morty</Text>

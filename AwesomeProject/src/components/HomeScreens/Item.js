@@ -1,14 +1,14 @@
 import React from 'react'
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 
-const MainItem = () => {
+const Item = () => {
     return (
         <>
             <SafeAreaView style={styles.container}>
                 <View style={styles.containerItem}>
                 </View>
                 <View style={styles.itemDescription}>
-                    <Text>fjdbcjhdfb</Text>
+                    <Text>fjdbcjhddcddcdfb</Text>
                 </View>
             </SafeAreaView>
         </>
@@ -43,4 +43,4 @@ const styles = StyleSheet.create({
 
 
 
-export default MainItem
+export default Item

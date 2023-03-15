@@ -1,25 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState, useEffect } from 'react';
 
-// import LoadingPage from './src/components/LoadingPage';
-import MainItems from './src/components/MainItems';
-import MainItem from './src/components/MainItem'
+import { NavigationContainer } from '@react-navigation/native';
+
+import HomeScreen from './src/components/HomeScreen';
+import LoadingPage from './src/components/LoadingPage';
 
 
 export default function App() {
+  const [isLoad, setIsLoad] = useState(true)
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoad(false)
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <>
-      <MainItems />
-      {/* <MainItem /> */}
-    </>
+    <NavigationContainer>
+      {isLoad ? <LoadingPage /> : <HomeScreen />}
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   backgroundColor: '#000',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
-});
+
