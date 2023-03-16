@@ -13,8 +13,10 @@ import Settings from './HomeScreens/Settings';
 
 const Tab = createBottomTabNavigator();
 
+
 const HomeScreen = () => {
     return (
+
         <Tab.Navigator>
             <Tab.Screen name="Characters" component={Characters}
                 options={{
