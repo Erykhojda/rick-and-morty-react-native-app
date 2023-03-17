@@ -2,8 +2,12 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native';
 
 
-const MainItems = () => {
+const MainItems = ({ navigation }) => {
     const [data, setData] = useState([])
+    const [name, setName] = useState('')
+    const [imgSrc, setImgSrc] = useState('')
+    const [created, setCreated] = useState('')
+    const [gender, setGender] = useState('')
 
     const URL = "https://rickandmortyapi.com/api/character"
 
@@ -31,17 +35,26 @@ const MainItems = () => {
             .then(receivedData => setData(receivedData.results))
     }
 
-    // console.log(data)
-
-    const selectCharacter = ({ navigation }) => {
-        // navigation.navigate('Item');
+    const fetchData = () => {
+        navigation.navigate('Item', { name: name, img: imgSrc, gender: gender, created: created });
     }
+
+
+    console.log(name)
+    console.log(imgSrc)
+
     return (
         <>
             <SafeAreaView style={styles.container}>
                 <ScrollView contentContainerStyle={styles.containerScroll}>
                     {data.map(character =>
-                        <TouchableOpacity onPress={selectCharacter}>
+                        <TouchableOpacity onPress={() => {
+                            setName(character.name)
+                            setImgSrc(character.image)
+                            setGender(character.gender)
+                            setCreated(character.created)
+                            fetchData()
+                        }}>
                             <View style={styles.containerImg}>
                                 <View>
                                     <Image style={styles.img} source={{ uri: character.image }}></Image>

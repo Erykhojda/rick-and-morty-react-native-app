@@ -1,14 +1,29 @@
 import React from 'react'
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
 
-const Item = () => {
+const Item = ({ route }) => {
+    results = {
+        name: route.params?.name,
+        img: route.params?.img,
+        gender: route.params?.gender,
+        created: route.params?.created
+    }
     return (
         <>
             <SafeAreaView style={styles.container}>
                 <View style={styles.containerItem}>
+                    <Image style={styles.img} source={{ uri: results.img }}></Image>
                 </View>
-                <View style={styles.itemDescription}>
-                    <Text>fjdbcjhddcddcdfb</Text>
+                <View style={styles.containerDescription}>
+                    <View style={{ paddingVertical: 5 }}>
+                        <Text style={{ color: 'white', fontSize: 26 }}>{results.name}</Text>
+                    </View>
+                    <View style={{ paddingVertical: 5 }}>
+                        <Text style={{ color: 'white', fontSize: 26 }}>{results.gender}</Text>
+                    </View>
+                    <View style={{ paddingVertical: 5 }}>
+                        <Text style={{ color: 'white', fontSize: 26 }}>{results.created}</Text>
+                    </View>
                 </View>
             </SafeAreaView>
         </>
@@ -19,26 +34,32 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',
-        backgroundColor: '#000000',
+        backgroundColor: '#000',
         alignItems: 'flex-start',
         justifyContent: 'center',
         flexWrap: 'wrap'
     },
 
     containerItem: {
-        height: 300,
-        width: 300,
-        backgroundColor: '#060606',
         marginVertical: 20,
-        borderRadius: 6
     },
 
-    itemDescription: {
-        height: 100,
-        width: 200,
-        backgroundColor: '#060606',
-        borderRadius: 6
+    img: {
+        height: 300,
+        width: 300,
+        borderRadius: 10
+    },
+
+    containerDescription: {
+        alignItems: 'center',
+    },
+
+    text: {
+        color: 'white',
+        fontSize: 26
     }
+
+
 })
 
 
