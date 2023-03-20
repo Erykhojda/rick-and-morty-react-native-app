@@ -7,7 +7,8 @@ const Item = ({ route }) => {
         name: route.params?.name,
         img: route.params?.img,
         gender: route.params?.gender,
-        created: route.params?.created,
+        status: route.params?.status,
+        locationName: route.params.locationName,
         idCharacter: route.params?.idCharacter
     }
 
@@ -19,13 +20,16 @@ const Item = ({ route }) => {
             </View>
             <View style={styles.containerDescription}>
                 <View style={{ paddingVertical: 5 }}>
-                    <Text style={{ color: 'white', fontSize: 26 }}>{results.name}</Text>
+                    <Text style={{ color: 'white', fontSize: 26 }}>Name: {results.name}</Text>
                 </View>
                 <View style={{ paddingVertical: 5 }}>
-                    <Text style={{ color: 'white', fontSize: 26 }}>{results.gender}</Text>
+                    <Text style={{ color: 'white', fontSize: 26 }}>Gender: {results.gender}</Text>
                 </View>
                 <View style={{ paddingVertical: 5 }}>
-                    <Text style={{ color: 'white', fontSize: 26 }}>{results.created}</Text>
+                    <Text style={{ color: 'white', fontSize: 26 }}>Status: {results.status}</Text>
+                </View>
+                <View style={{ paddingVertical: 5 }}>
+                    <Text style={{ color: 'white', fontSize: 26 }}>Location: {results.locationName}</Text>
                 </View>
             </View>
         </SafeAreaView>
@@ -53,7 +57,7 @@ const styles = StyleSheet.create({
     },
 
     containerDescription: {
-        alignItems: 'center',
+        alignItems: 'flex-left',
     },
 
     text: {

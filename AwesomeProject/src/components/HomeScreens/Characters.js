@@ -3,16 +3,19 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 
-import LoadingPage from '../LoadingPage';
 const MainItems = ({ navigation }) => {
     const [data, setData] = useState([]);
+    const [dataNext, setDataNext] = useState([]);
     const [name, setName] = useState('');
     const [imgSrc, setImgSrc] = useState('');
-    const [created, setCreated] = useState('');
+    const [status, setStatus] = useState('');
     const [gender, setGender] = useState('');
+    const [locationName, setLocationName] = useState('')
     const [idCharacter, setIdCharacter] = useState();
+    const [counter, setCounter] = useState(40);
 
-    const URL = "https://rickandmortyapi.com/api/character"
+    const URL = "https://rickandmortyapi.com/api/character/"
+
 
 
     useEffect(() => {
@@ -27,22 +30,38 @@ const MainItems = ({ navigation }) => {
             .catch(err => err)
     }
 
+    const loadDataNext = async () => {
+        if (counter <= 42) {
+            setCounter(count => count + 1);
+            console.log(counter)
+        } else {
+            alert('No More items')
+        }
+        await fetch(URL + `?page=${counter}`)
+            .then(response => response.json())
+            .then(receivedData => setDataNext(receivedData.results))
+            .catch(err => err)
+        setData([...data, ...dataNext])
+    }
+
+
     const sendData = () => {
-        navigation.navigate('Item', { name: name, img: imgSrc, gender: gender, created: created, idCharacter: idCharacter });
+        navigation.navigate('Item', { name: name, img: imgSrc, gender: gender, status: status, locationName: locationName, idCharacter: idCharacter });
     }
     return (
 
         < SafeAreaView style={styles.container} >
             <ScrollView
-                // onContentSizeChange={(w, h) => alert(h)}
-                // onMomentumScrollEnd={() => }
+                onMomentumScrollEnd={loadDataNext}
+
                 contentContainerStyle={styles.containerScroll}>
                 {data.map((character) =>
                     <TouchableOpacity onPressIn={() => {
                         setName(character.name)
                         setImgSrc(character.image)
                         setGender(character.gender)
-                        setCreated(character.created)
+                        setStatus(character.status)
+                        setLocationName(character.location.name)
                         setIdCharacter(uuidv4())
                     }}
                         onPress={sendData}
@@ -58,12 +77,13 @@ const MainItems = ({ navigation }) => {
                                     <Text style={styles.descriptionName}>
                                         {character.name}</Text>
                                 </View>
-                                <Text style={styles.descriptionText}>{character.status}</Text>
+                                <Text style={styles.descriptionText}>Status: {character.status}</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
                 )}
             </ScrollView>
+
         </SafeAreaView >
 
 
@@ -90,8 +110,9 @@ const styles = StyleSheet.create({
     },
 
     containerImg: {
+        flexBasis: '40%',
         backgroundColor: '#060606',
-        margin: 10,
+        marginBottom: 10,
         alignItems: 'center',
         borderBottomEndRadius: 6,
         borderBottomStartRadius: 6,
@@ -105,8 +126,8 @@ const styles = StyleSheet.create({
     },
 
     img: {
-        height: 160,
-        width: 160,
+        height: 170,
+        width: 170,
     },
 
     imgDescription: {
@@ -116,20 +137,21 @@ const styles = StyleSheet.create({
     },
 
     containerName: {
-        height: 40,
-        width: '80%',
+        height: 60,
+        width: '50%',
         justifyContent: 'center'
     },
 
     descriptionName: {
         color: 'white',
-        fontSize: 14,
+        fontSize: 16,
         marginVertical: 2,
         textAlign: 'center',
     },
 
     descriptionText: {
-        color: 'gray'
+        color: 'gray',
+        paddingBottom: 10,
     },
 });
 
