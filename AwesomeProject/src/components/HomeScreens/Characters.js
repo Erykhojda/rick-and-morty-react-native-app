@@ -1,29 +1,20 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native';
+import { v4 as uuidv4 } from 'uuid';
 
+import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 
+import LoadingPage from '../LoadingPage';
 const MainItems = ({ navigation }) => {
-    const [data, setData] = useState([])
-    const [name, setName] = useState('')
-    const [imgSrc, setImgSrc] = useState('')
-    const [created, setCreated] = useState('')
-    const [gender, setGender] = useState('')
+    const [data, setData] = useState([]);
+    const [name, setName] = useState('');
+    const [imgSrc, setImgSrc] = useState('');
+    const [created, setCreated] = useState('');
+    const [gender, setGender] = useState('');
+    const [idCharacter, setIdCharacter] = useState();
 
     const URL = "https://rickandmortyapi.com/api/character"
 
-    // async function callApi() {
-    //     try {
-    //         const res = await fetch(URL)
-    //         const data = await res.json()
-    //         console.log(data)
 
-    //         // for (let i = 0; i < data.results.name.lenght; i++)
-    //         //     console.log(data.results[i].name)
-    //         // console.log(dataApi)
-    //     }
-    //     catch {
-    //         const err = console.err(err)
-    //     }
     useEffect(() => {
         loadData()
     }, [])
@@ -33,42 +24,50 @@ const MainItems = ({ navigation }) => {
         await fetch(URL)
             .then(response => response.json())
             .then(receivedData => setData(receivedData.results))
+            .catch(err => err)
     }
 
-    const fetchData = () => {
-        navigation.navigate('Item', { name: name, img: imgSrc, gender: gender, created: created });
+    const sendData = () => {
+        navigation.navigate('Item', { name: name, img: imgSrc, gender: gender, created: created, idCharacter: idCharacter });
     }
-
-
-    console.log(name)
-    console.log(imgSrc)
-
     return (
-        <>
-            <SafeAreaView style={styles.container}>
-                <ScrollView contentContainerStyle={styles.containerScroll}>
-                    {data.map(character =>
-                        <TouchableOpacity onPress={() => {
-                            setName(character.name)
-                            setImgSrc(character.image)
-                            setGender(character.gender)
-                            setCreated(character.created)
-                            fetchData()
-                        }}>
-                            <View style={styles.containerImg}>
-                                <View>
-                                    <Image style={styles.img} source={{ uri: character.image }}></Image>
+
+        < SafeAreaView style={styles.container} >
+            <ScrollView
+                // onContentSizeChange={(w, h) => alert(h)}
+                // onMomentumScrollEnd={() => }
+                contentContainerStyle={styles.containerScroll}>
+                {data.map((character) =>
+                    <TouchableOpacity onPressIn={() => {
+                        setName(character.name)
+                        setImgSrc(character.image)
+                        setGender(character.gender)
+                        setCreated(character.created)
+                        setIdCharacter(uuidv4())
+                    }}
+                        onPress={sendData}
+
+                    >
+
+                        <View key={idCharacter} style={styles.containerImg}>
+
+                            <Image style={styles.img} source={{ uri: character.image }}></Image>
+
+                            <View style={styles.imgDescription}>
+                                <View style={styles.containerName}>
+                                    <Text style={styles.descriptionName}>
+                                        {character.name}</Text>
                                 </View>
-                                <View style={styles.imgDescription}>
-                                    <Text style={styles.descriptionName}>{character.name}</Text>
-                                    <Text style={styles.descriptionText}>{character.status}</Text>
-                                </View>
+                                <Text style={styles.descriptionText}>{character.status}</Text>
                             </View>
-                        </TouchableOpacity>
-                    )}
-                </ScrollView>
-            </SafeAreaView>
-        </>
+                        </View>
+                    </TouchableOpacity>
+                )}
+            </ScrollView>
+        </SafeAreaView >
+
+
+
     )
 }
 
@@ -91,10 +90,8 @@ const styles = StyleSheet.create({
     },
 
     containerImg: {
-        flexBasis: '44%',
         backgroundColor: '#060606',
         margin: 10,
-        fontSize: 12,
         alignItems: 'center',
         borderBottomEndRadius: 6,
         borderBottomStartRadius: 6,
@@ -108,24 +105,32 @@ const styles = StyleSheet.create({
     },
 
     img: {
-        height: 150,
-        width: 150,
+        height: 160,
+        width: 160,
     },
 
     imgDescription: {
-        alignItems: 'center'
+        alignItems: 'center',
+        flexWrap: 'wrap',
+
+    },
+
+    containerName: {
+        height: 40,
+        width: '80%',
+        justifyContent: 'center'
     },
 
     descriptionName: {
         color: 'white',
-        fontSize: 16,
-        marginVertical: 4,
+        fontSize: 14,
+        marginVertical: 2,
+        textAlign: 'center',
     },
 
     descriptionText: {
         color: 'gray'
-    }
-
+    },
 });
 
 export default MainItems

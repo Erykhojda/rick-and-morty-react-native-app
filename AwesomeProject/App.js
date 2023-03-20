@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -16,7 +15,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{
-        headerShadowVisible: false
+        headerShadowVisible: false,
       }}>
         <Stack.Screen options={{
           title: '',
@@ -26,6 +25,7 @@ export default function App() {
         }}
           name="LoginScreen" component={LoadingPage} />
         <Stack.Screen options={{
+          headerBackVisible: false,
           title: '',
           headerStyle: {
             backgroundColor: '#fff',
@@ -37,6 +37,7 @@ export default function App() {
           headerStyle: {
             backgroundColor: '#fff',
           },
+
         }}
           name="Item" component={Item} />
 

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from 'react-native';
+import { StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
 
 
 const LoadingPage = ({ navigation }) => {

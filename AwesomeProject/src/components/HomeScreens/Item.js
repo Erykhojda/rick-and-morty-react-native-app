@@ -2,31 +2,33 @@ import React from 'react'
 import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
 
 const Item = ({ route }) => {
+
     results = {
         name: route.params?.name,
         img: route.params?.img,
         gender: route.params?.gender,
-        created: route.params?.created
+        created: route.params?.created,
+        idCharacter: route.params?.idCharacter
     }
+
+    console.log(results.idCharacter)
     return (
-        <>
-            <SafeAreaView style={styles.container}>
-                <View style={styles.containerItem}>
-                    <Image style={styles.img} source={{ uri: results.img }}></Image>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.containerItem}>
+                <Image style={styles.img} source={{ uri: results.img }}></Image>
+            </View>
+            <View style={styles.containerDescription}>
+                <View style={{ paddingVertical: 5 }}>
+                    <Text style={{ color: 'white', fontSize: 26 }}>{results.name}</Text>
                 </View>
-                <View style={styles.containerDescription}>
-                    <View style={{ paddingVertical: 5 }}>
-                        <Text style={{ color: 'white', fontSize: 26 }}>{results.name}</Text>
-                    </View>
-                    <View style={{ paddingVertical: 5 }}>
-                        <Text style={{ color: 'white', fontSize: 26 }}>{results.gender}</Text>
-                    </View>
-                    <View style={{ paddingVertical: 5 }}>
-                        <Text style={{ color: 'white', fontSize: 26 }}>{results.created}</Text>
-                    </View>
+                <View style={{ paddingVertical: 5 }}>
+                    <Text style={{ color: 'white', fontSize: 26 }}>{results.gender}</Text>
                 </View>
-            </SafeAreaView>
-        </>
+                <View style={{ paddingVertical: 5 }}>
+                    <Text style={{ color: 'white', fontSize: 26 }}>{results.created}</Text>
+                </View>
+            </View>
+        </SafeAreaView>
     )
 }
 
@@ -34,7 +36,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',
-        backgroundColor: '#000',
+        backgroundColor: '#090909',
         alignItems: 'flex-start',
         justifyContent: 'center',
         flexWrap: 'wrap'
