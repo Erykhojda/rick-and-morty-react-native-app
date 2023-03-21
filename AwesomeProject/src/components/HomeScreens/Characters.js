@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import FastImage from 'react-native-fast-image'
+
+
 import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 const MainItems = ({ navigation }) => {
@@ -12,11 +15,9 @@ const MainItems = ({ navigation }) => {
     const [gender, setGender] = useState('');
     const [locationName, setLocationName] = useState('')
     const [idCharacter, setIdCharacter] = useState();
-    const [counter, setCounter] = useState(40);
+    const [counter, setCounter] = useState(2);
 
     const URL = "https://rickandmortyapi.com/api/character/"
-
-
 
     useEffect(() => {
         loadData()
@@ -33,7 +34,7 @@ const MainItems = ({ navigation }) => {
     const loadDataNext = async () => {
         if (counter <= 42) {
             setCounter(count => count + 1);
-            console.log(counter)
+            // console.log(counter)
         } else {
             alert('No More items')
         }
@@ -44,13 +45,12 @@ const MainItems = ({ navigation }) => {
         setData([...data, ...dataNext])
     }
 
-
     const sendData = () => {
         navigation.navigate('Item', { name: name, img: imgSrc, gender: gender, status: status, locationName: locationName, idCharacter: idCharacter });
     }
     return (
 
-        < SafeAreaView style={styles.container} >
+        <SafeAreaView style={styles.container} >
             <ScrollView
                 onMomentumScrollEnd={loadDataNext}
 
@@ -70,7 +70,15 @@ const MainItems = ({ navigation }) => {
 
                         <View key={idCharacter} style={styles.containerImg}>
 
-                            <Image style={styles.img} source={{ uri: character.image }}></Image>
+                            {/* <Image style={styles.img} source={{ uri: character.image }}></Image> */}
+                            <FastImage
+                                style={{ width: 200, height: 200 }}
+                                source={{
+                                    uri: character.image,
+                                    priority: FastImage.priority.normal,
+                                }}
+                                resizeMode={FastImage.resizeMode.contain}
+                            />
 
                             <View style={styles.imgDescription}>
                                 <View style={styles.containerName}>
