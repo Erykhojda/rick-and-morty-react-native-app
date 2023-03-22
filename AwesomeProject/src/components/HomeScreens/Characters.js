@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import FastImage from 'react-native-fast-image'
+import ExpoFastImage from 'expo-fast-image'
 
 
 import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
@@ -55,7 +55,7 @@ const MainItems = ({ navigation }) => {
                 onMomentumScrollEnd={loadDataNext}
 
                 contentContainerStyle={styles.containerScroll}>
-                {data.map((character) =>
+                {data.map((character, index) =>
                     <TouchableOpacity onPressIn={() => {
                         setName(character.name)
                         setImgSrc(character.image)
@@ -69,17 +69,13 @@ const MainItems = ({ navigation }) => {
                     >
 
                         <View key={idCharacter} style={styles.containerImg}>
-
-                            {/* <Image style={styles.img} source={{ uri: character.image }}></Image> */}
-                            <FastImage
-                                style={{ width: 200, height: 200 }}
+                            <ExpoFastImage
+                                style={styles.img}
                                 source={{
                                     uri: character.image,
-                                    priority: FastImage.priority.normal,
+                                    cacheKey: index
                                 }}
-                                resizeMode={FastImage.resizeMode.contain}
                             />
-
                             <View style={styles.imgDescription}>
                                 <View style={styles.containerName}>
                                     <Text style={styles.descriptionName}>
