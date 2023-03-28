@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 import HomeScreen from './src/components/HomeScreen';
-import LoadingPage from './src/components/LoadingPage';
 import Item from './src/components/HomeScreens/Item';
 
 const Stack = createNativeStackNavigator();
@@ -17,13 +16,6 @@ export default function App() {
       <Stack.Navigator screenOptions={{
         headerShadowVisible: false,
       }}>
-        <Stack.Screen options={{
-          title: '',
-          headerStyle: {
-            backgroundColor: '#fff',
-          },
-        }}
-          name="LoginScreen" component={LoadingPage} />
         <Stack.Screen options={{
           headerBackVisible: false,
           title: '',

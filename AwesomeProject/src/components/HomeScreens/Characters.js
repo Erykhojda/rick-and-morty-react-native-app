@@ -4,96 +4,90 @@ import { v4 as uuidv4 } from 'uuid';
 import ExpoFastImage from 'expo-fast-image'
 
 
-import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableOpacity, ActivityIndicator, Pressable } from 'react-native';
 
 const MainItems = ({ navigation }) => {
     const [data, setData] = useState([]);
-    const [dataNext, setDataNext] = useState([]);
-    const [name, setName] = useState('');
-    const [imgSrc, setImgSrc] = useState('');
-    const [status, setStatus] = useState('');
-    const [gender, setGender] = useState('');
-    const [locationName, setLocationName] = useState('')
-    const [idCharacter, setIdCharacter] = useState();
-    const [counter, setCounter] = useState(2);
+    const [isLoad, setIsLoading] = useState(true)
+    const [page, setPage] = useState(1);
+    const [isLoadNext, setIsLoandNext] = useState(false)
 
     const URL = "https://rickandmortyapi.com/api/character/"
 
+
     useEffect(() => {
-        loadData()
-    }, [])
+        async function fetchData() {
+            try {
+                const response = await fetch(URL + `?page=${page}`);
+                const json = await response.json();
+                const data = json.results
+                setData((prevState => [...prevState, ...data]));
+                setIsLoading(true);
+                setIsLoandNext(true)
+            } catch (error) {
+                console.error(error);
+                setIsLoading(false);
+                setIsLoandNext(false)
 
-
-    const loadData = async () => {
-        await fetch(URL)
-            .then(response => response.json())
-            .then(receivedData => setData(receivedData.results))
-            .catch(err => err)
-    }
-
-    const loadDataNext = async () => {
-        if (counter <= 42) {
-            setCounter(count => count + 1);
-            // console.log(counter)
-        } else {
-            alert('No More items')
+            }
         }
-        await fetch(URL + `?page=${counter}`)
-            .then(response => response.json())
-            .then(receivedData => setDataNext(receivedData.results))
-            .catch(err => err)
-        setData([...data, ...dataNext])
+        fetchData();
+    }, [page]);
+
+    function handleLoadMore() {
+        setPage((prevPage) => prevPage + 1);
+        setIsLoading(false);
+
     }
 
-    const sendData = () => {
-        navigation.navigate('Item', { name: name, img: imgSrc, gender: gender, status: status, locationName: locationName, idCharacter: idCharacter });
+
+    const sendData = (character, index) => {
+        navigation.navigate('Item', { name: character.name, img: character.image, gender: character.gender, status: character.status, locationName: character.location.name, idCharacter: index });
     }
     return (
+        <>
+            <SafeAreaView style={styles.container} >
+                {!isLoadNext ? <ActivityIndicator size="large" /> :
 
-        <SafeAreaView style={styles.container} >
-            <ScrollView
-                onMomentumScrollEnd={loadDataNext}
+                    <ScrollView
+                        // onMomentumScrollEnd={handleLoadMore}
+                        contentContainerStyle={styles.containerScroll}>
+                        {data.map((character, index) =>
+                            <TouchableOpacity key={index}
+                                onPress={() => sendData(character, index)}
+                            >
 
-                contentContainerStyle={styles.containerScroll}>
-                {data.map((character, index) =>
-                    <TouchableOpacity onPressIn={() => {
-                        setName(character.name)
-                        setImgSrc(character.image)
-                        setGender(character.gender)
-                        setStatus(character.status)
-                        setLocationName(character.location.name)
-                        setIdCharacter(uuidv4())
-                    }}
-                        onPress={sendData}
-
-                    >
-
-                        <View key={idCharacter} style={styles.containerImg}>
-                            <ExpoFastImage
-                                style={styles.img}
-                                source={{
-                                    uri: character.image,
-                                    cacheKey: index
-                                }}
-                            />
-                            <View style={styles.imgDescription}>
-                                <View style={styles.containerName}>
-                                    <Text style={styles.descriptionName}>
-                                        {character.name}</Text>
+                                <View style={styles.containerImg}>
+                                    <ExpoFastImage
+                                        style={styles.img}
+                                        source={{
+                                            uri: character.image,
+                                            cacheKey: index
+                                        }}
+                                    />
+                                    <View style={styles.imgDescription}>
+                                        <View style={styles.containerName}>
+                                            <Text style={styles.descriptionName}>
+                                                {character.name}</Text>
+                                        </View>
+                                        <Text style={styles.descriptionText}>Status: {character.status}</Text>
+                                    </View>
                                 </View>
-                                <Text style={styles.descriptionText}>Status: {character.status}</Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                )}
-            </ScrollView>
+                            </TouchableOpacity>
 
-        </SafeAreaView >
+                        )}
+                        <Pressable style={styles.btnNext} onPress={handleLoadMore}><Text style={styles.textBtn}>Next Page</Text></Pressable>
 
+                    </ScrollView>
+                }
 
+            </SafeAreaView >
+            {!isLoad ? <ActivityIndicator size="large" /> : null}
 
+        </>
     )
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -151,12 +145,26 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginVertical: 2,
         textAlign: 'center',
+        width: 120,
     },
 
     descriptionText: {
         color: 'gray',
         paddingBottom: 10,
     },
+
+    btnNext: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 50,
+        width: 160,
+        backgroundColor: 'gray',
+        borderRadius: 25,
+        marginBottom: 8
+    },
+    textBtn: {
+        fontSize: 18
+    }
 });
 
 export default MainItems

@@ -12,7 +12,7 @@ const Item = ({ route }) => {
         idCharacter: route.params?.idCharacter
     }
 
-    console.log(results.idCharacter)
+    // console.log(results.idCharacter)
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.containerItem}>
